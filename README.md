@@ -1,6 +1,8 @@
 Rakuten Web Service SDK for PHP
 ===============================
 
+There is an English version in [here](https://github.com/rakuten-ws/rws-php-sdk/blob/master/README.en.md).
+
 [![Build Status](https://secure.travis-ci.org/rakuten-ws/rws-php-sdk.png?branch=master)](http://travis-ci.org/rakuten-ws/rws-php-sdk)
 
 Rakuten Web Service SDK for PHP は、PHPアプリケーションから
@@ -14,8 +16,8 @@ Rakuten Web Service SDK for PHP は、PHPアプリケーションから
 - PHP5.2.10未満を利用する場合、PEAR の [HTTP_Client] (http://pear.php.net/manual/ja/package.http.http-client.php)
   か curl拡張の導入が必要です。
 
-使い方
-------
+基本的な使い方
+--------------
 
 事前に、楽天ウェブサービスのドキュメントページ(http://webservice.rakuten.co.jp)
 にて、アプリ登録を行ってください。
@@ -54,6 +56,7 @@ SDK の利用準備が整います。
 以下のAPIはレスポンスが、Iterator に対応しているため
 foreach で 情報(商品情報・施設情報など) を順次取得することが可能です。
 
+* AuctionGenreKeywordSearch
 * AuctionItemCodeSearch
 * AuctionItemSearch
 * BooksBookSearch
@@ -78,6 +81,7 @@ foreach で 情報(商品情報・施設情報など) を順次取得するこ�
 * ItemSearch
 * KeywordHotelSearch
 * ProductSearch
+* RecipeCategoryRanking
 * SimpleHotelSearch
 * VacantHotelSearch
 
@@ -159,6 +163,26 @@ APIを使う場合は、 *access_token* を取得する必要があります。
         echo 'Error:'.$response->getMessage();
     }
 
+プロキシの設定
+--------------
+
+*RakutenRws_Client::setProxy()* で、プロキシを通してAPIにアクセスすることができます。
+
+以下が利用例になります
+
+    require_once '/path/to/sdk-dir/autoload.php';
+
+    $client = new RakutenRws_Client();
+    $client->setProxy('proxy-host.example.com:port');
+    $client->setApplicationId('YOUR_APPLICATION_ID');
+    $client->setAffiliateId('YOUR_AFFILIATE_ID');
+
+    // このリクエストは、プロキシを通して行われます。
+    $response = $client->execute('ItemSearch', array(
+      'keyword' => 'うどん'
+    ));
+
+
 サンプルコード
 -------------
 
@@ -170,18 +194,17 @@ APIを使う場合は、 *access_token* を取得する必要があります。
 
 - http://webservice.rakuten.co.jp
 
-
 Composer での入手
 -----------------
 
 RWS PHP SDK は、[Packagist](http://packagist.org/) にパッケージ登録を行っています。
 そのため、 [Composer](http://getcomposer.org/) を通してパッケージを入手することができます。
 
-- composer を入手します
+composer を入手します
 
-  curl -s http://getcomposer.org/installer | php
+    curl -s http://getcomposer.org/installer | php
 
-- あなたの開発プロジェクトのルートに composer.json を作成します。
+あなたの開発プロジェクトのルートに composer.json を作成します。
 
     {
         "require": {
@@ -189,9 +212,9 @@ RWS PHP SDK は、[Packagist](http://packagist.org/) にパッケージ登録を
         }
     }
 
-- composer を通してパッケージを入手します
+composer を通してパッケージを入手します
 
-  php composer.phar install
+    php composer.phar install
 
 SDK API Document
 ----------------
